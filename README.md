@@ -110,6 +110,10 @@ Main CRC: 0x8021 (0x8021)
 
 Once you are done working with your RAM SPD, reboot your system and change the `SPD Write Disable` BIOS option back to `True` (or whatever is an equivalent in you case, with the same meaning), save changes and reboot again.
 
+![TEAMGROUP T-Create Expert reanimation](.repo/ccdc72278f806fc9.webp)
+
+*On the photo above: TEAMGROUP T-Create Expert module on a reanimation table after having too much RGB. This particular module was successfully recovered by flashing its SPD EEPROM with a known working dump.*
+
 ## Preventing DDR5 SPD Corruption
 
 It must be noted that DDR5 SPD appears to be more susceptible to accidental corruption, at least compared to previous DDR generations.
@@ -132,7 +136,15 @@ One radical measure that can be done to prevent important parts of SPD EEPROM fr
 
 (Normally, DDR5 RAM is supposed to come with RSWP protection bit already set on all important blocks from factory, and most kits do. Unfortunately, this hadn’t always been the case. Early revisions of TEAMGROUP and G.SKILL DDR5 RAM are notorious for having no protection whatsoever.)
 
+![RSWP status](.repo/8cdcbfe0e9f82627.webp)
+
+*New revisions of TEAMGROUP T-Create Expert RAM come with RSWP set for the most important blocks. It's a big improvement, but the XMP and EXPO blocks are left unprotected. If they get corrupted and the system is configured to use XMP (which it very likely would be), the system would become unbootable. In this case partial recovery is possible by resetting BIOS which would disable XMP and fallback to a (protected) JEDEC profile.*
+
 RSWP sees SPD EEPROM contents as divided into 16 blocks of 64 bytes each. For a normal non-RGB RAM module setting RSWP for blocks 0..13 is recommended. The last two blocks, 14 and 15, belong to user-programmable XMP section and must be left writable.
+
+![RSWP set](.repo/cbd5fbcf53cb76ef.webp)
+
+*The same T-Create Expert module with RSWP set for remaining blocks, including XMP and EXPO. Such module would no longer fail due to SPD corruption.*
 
 RGB modules, on the other hand, are a challenge. In order to properly add RSWP protection you need to know what exact addresses are used to store RGB lighting settings. From there you can infer what blocks (in addition to 14 and 15) must be left writable in order to keep your RAM RGB lighting functional and configurable. (It is possible for certain RGB RAM to not store its LED settings inside SPD, in which case it relies completely on software to set lighting effects upon booting into operating system. If you know for sure this is the case with your RAM, you can set RSWP for the first fourteen blocks as with non-RGB variant.)
 

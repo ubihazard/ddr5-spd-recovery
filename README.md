@@ -156,9 +156,7 @@ As you might have already unserstood, accidentally setting RSWP on a data block 
 
 ## Disclaimer
 
-Reading from and writing to devices via SMBus is a high risk operation which can potentially result in data corruption and hardware failure if done improperly.
-
-`ddr5-spd-recovery` is provided publicly without warranty of any kind. Although every step was taken to ensure decent code quality, correctness of operation, and overall reliability of the software, it is not possible to guarantee fault-free execution in your particular environment and with your hardware. You should understand what you are doing and exercise extreme caution when using this software. The author of this software takes no responsibility for any damages that can happen due to use or misuse of this software.
+Reading from and writing to devices via SMBus is a high risk operation which can potentially result in data corruption and hardware failure if done improperly. `ddr5-spd-recovery` is provided publicly without warranty of any kind. Although every step was taken to ensure decent code quality, correctness of operation, and overall reliability of the software, it is not possible to guarantee fault-free execution in your particular environment and with your hardware. You should understand what you are doing and exercise extreme caution when using this software. The author of this software takes no responsibility for any damages that can happen due to use or misuse of this software.
 
 In legal terms:
 

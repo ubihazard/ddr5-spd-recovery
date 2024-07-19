@@ -138,7 +138,7 @@ One radical measure that can be done to prevent important parts of SPD EEPROM fr
 
 ![RSWP status](.github/8cdcbfe0e9f82627.webp)
 
-*New revisions of TEAMGROUP T-Create Expert RAM come with RSWP set for the most important blocks. It’s a big improvement, but the XMP and EXPO blocks are left unprotected. If they get corrupted and the system is configured to use XMP, which it very likely would be, it would become unbootable. In such case partial recovery could be possible by resetting BIOS which would disable XMP and fallback to a (protected) JEDEC profile.*
+*New revisions of TEAMGROUP T-Create Expert RAM come with RSWP set for the most important blocks. It’s a big improvement, but the XMP and EXPO blocks are left unprotected. If they get corrupted and the system is configured to use XMP, which it very likely would be, it could become unbootable. In such case partial recovery can be possible by resetting BIOS which would disable XMP and fallback to a (protected) JEDEC profile.*
 
 RSWP sees SPD EEPROM contents as divided into 16 blocks of 64 bytes each. For a normal non-RGB RAM module setting RSWP for blocks 0..13 is recommended. The last two blocks, 14 and 15, belong to user-programmable XMP section and must be left writable.
 

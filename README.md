@@ -174,3 +174,7 @@ OTHER DEALINGS IN THE SOFTWARE.
 ```
 
 See the [license](LICENSE.md).
+
+* * *
+
+If you find [ddr5-spd-recovery](https://github.com/ubihazard/ddr5-spd-recovery) useful, you can [buy me a ☕](https://www.buymeacoffee.com/ubihazard "Donate").

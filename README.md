@@ -95,7 +95,7 @@ Be sure to verify the integrity of the dump:
 
 The CRC values in the ROM must all match their respective computed values. If they don’t, this means the ROM is damaged: either due to previous illegal writes to it or because it couldn’t be read correctly from the SPD EEPROM device. You should delete it to avoid flashing it somewhere accidentally.
 
-An example of `spdinfo` output on a known good dump from the TEAMGROUP T-Create Expert 6000 CL38 module:
+An example of `spdinfo` output for a known good dump from the TEAMGROUP T-Create Expert 6000 CL38 module:
 
 ```
 Manufacturer: 04ef

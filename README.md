@@ -6,9 +6,9 @@ Only for DDR5. Only for Linux.
 
 ## Description
 
-This software can be used to repair DDR5 memory sticks with corrupted SPD EEPROM that got broken by poorly coded applications made by imbeciles, e.g. [OpenRGB](https://openrgb.org/), which fail to access devices on SMBus in a proper manner.
+This software can be used to repair DDR5 memory modules with corrupted SPD EEPROM that got broken by poorly coded applications made by imbeciles, e.g. [OpenRGB](https://openrgb.org/), which fail to access devices on SMBus in a proper manner.
 
-Over time this results in RAM SPD EEPROM contents becoming increasingly filled with junk to the point of system no longer recognizing certain memory sticks and eventually even failing to boot at all. Typical symptoms include: having just 16 GB of system RAM as reported by operating system (whereas you actually got two 16 GB modules installed and should have 32 GB available), RAM not being reported correctly in diagnostic software (CPU-Z, AIDA64, etc.), having messed up serial or part numbers with weird symbols, absurd timing values, running on wrong speed and with incorrect timings not advertised on a RAM package by manufacturer (can be noticed in BIOS), experiencing blue screens and kernel panics in relation to memory errors due to all of the above.
+Over time this results in RAM SPD EEPROM contents becoming increasingly filled with junk to the point of system no longer recognizing certain memory sticks and eventually even failing to boot at all. Typical symptoms include: having just 16 GB of RAM as reported by operating system (whereas you actually got two 16 GB modules installed and should have 32 GB available), RAM not being reported correctly in diagnostic software (CPU-Z, AIDA64, etc.), having messed up serial or part numbers with weird symbols, absurd timing values, running on wrong speed and with incorrect timings not advertised on a RAM package by manufacturer (can be noticed in BIOS), experiencing blue screens and kernel panics in relation to memory errors due to all of the above.
 
 With the provided tools you can:
 
@@ -17,7 +17,7 @@ With the provided tools you can:
   * Flash a working dump (if you got one) to repair broken RAM module(s).
       * Where do you get a working dump? That’s a good question, especially if all your modules are already tainted and you no longer have a single good stick to get a perfect dump from. Try asking on popular computer hardware boards and on Reddit. Chances are there will be people willing to help, provided your RAM kit isn’t too rare or you can identify a compatible one.
       * Consider RMA if your RAM is still under warranty. Actually, consider RMA first, before trying to use this software to repair the kit yourself, because chances are you are just going to break it even more.
-      * Share this page to bring more public awareness to this issue of DDR5 RAM failing because of subtle SPD corruption.
+      * Share this page to bring more public awareness to this issue of DDR5 RAM failing because of subtle SPD corruption by software.
   * Check RSWP status and add RSWP (reversible[^1] software protection) to your RAM modules to prevent their accidental corruption by junk software again.
       * Only for very experienced and knowledgeable users who understand what they are doing and realize the potential danger involved.
 
@@ -40,12 +40,12 @@ There are five utilites provided in total.
   * `spdread`: Dump the contents of the specified DDR5 SPD EEPROM.
   * `spdwrite`: Flash the SPD ROM image to the specified DDR5 SPD EEPROM.
   * `spdcheckrswp`: Check the RSWP status on all blocks of the specified DDR5 module.
-  * `spdsetrswp`: Set the RSWP on the specified blocks of the DDR5 EEPROM (__*very dangerous*__).
+  * `spdsetrswp`: Set the RSWP for the specified blocks of the DDR5 EEPROM __*(very dangerous)*__.
   * `spdinfo`: Output human-readable information obtained from SPD ROM image: manufacturer, date of production, serial number, part number, and, most importantly, CRC values of all available sections. Each present XMP profile block and EXPO section have their own associated CRC values separate from the main section CRC, which is located at byte offset `510` in the image.
 
 All tools except `spdinfo` must be invoked as root. Run each script with the `--help` argument for detailed usage instructions.
 
-*Before you start, make sure no other applications or services that could potentially access SMBus are running.* Any concurrent access to SMBus can lead to data corruption, even if it is synchronized. Although proper synchronization guarantees data integrity on a byte level, there’s no such guarantee when larger transfers are involved. So one application might switch EEPROM virtual page address to a different one in-between two byte reads (or writes) done by another application, leading to data being received from or sent to the wrong place inside EEPROM, which in case of writes can be catastrophic.
+*Before you start, make sure there are no other applications or services running that could potentially access SMBus.* Any concurrent access to SMBus can lead to data corruption, even if it is synchronized. Although proper synchronization guarantees data integrity on a byte level, there’s no such guarantee when larger transfers are involved. So one application might switch EEPROM virtual page address to a different one in-between two byte reads (or writes) done by another application, leading to data being received from or sent to the wrong place inside EEPROM, which in case of writes can be catastrophic.
 
 An appropriate kernel module must be loaded in order to access RAM SPD chip(s) via SMBus. On Intel it is `i2c_i801`:
 
@@ -61,7 +61,7 @@ modprobe i2c_amd_mp2
 
 You will also need `i2c_dev` and `ee1004` modules loaded for `i2ctools` to work, regardless of your platform.
 
-The `SPD Write Disable` option (or similar) in your mainboard BIOS must be set to `False`. This is required to gain access to full 1024 bytes of DDR5 EEPROM. If you don’t configure this option correctly in BIOS and attempt to dump your DDR5 SPD ROM with `spdread.py`, it will most likely fail with an I2C I/O error.
+The `SPD Write Disable` option (or similar) in your mainboard BIOS must be set to `False`. This is required to gain access to full 1024 bytes of DDR5 EEPROM. If you don’t configure this option correctly in BIOS and attempt to dump DDR5 SPD ROM with `spdread.py`, it will most likely fail with an I2C I/O error.
 
 Verify that you can talk to I2C devices by listing all available buses:
 
@@ -95,7 +95,7 @@ Be sure to verify the integrity of the dump:
 
 The CRC values in the ROM must all match their respective computed values. If they don’t, this means the ROM is damaged: either due to previous illegal writes to it or because it couldn’t be read correctly from the SPD EEPROM device. You should delete it to avoid flashing it somewhere accidentally.
 
-An example of running `spdinfo` on a known good dump from TEAMGROUP T-Create Expert 6000 CL38 module:
+An example of `spdinfo` output on a known good dump from the TEAMGROUP T-Create Expert 6000 CL38 module:
 
 ```
 Manufacturer: 04ef
@@ -108,7 +108,7 @@ Main CRC: 0x8021 (0x8021)
   EXPO CRC: 0x9fe2 (0x9fe2)
 ```
 
-Once you are done working with your RAM SPD, reboot your system and change the `SPD Write Disable` BIOS option back to `True` (or whatever is an equivalent in you case, with the same meaning), save changes and reboot again.
+Once you are done working with RAM SPD, reboot the system and change the `SPD Write Disable` BIOS option back to `True` (or whatever is an equivalent in your case, with the same meaning), save changes and reboot again.
 
 ![TEAMGROUP T-Create Expert reanimation](.repo/ccdc72278f806fc9.webp)
 
@@ -120,7 +120,7 @@ It must be noted that DDR5 SPD appears to be more susceptible to accidental corr
 
 You must never run your system with `SPD Write Disable` option set to `False` in BIOS as a norm, even if your RAM kit requires it to control RGB, – it is better to be left without fancy lighting effects than without working memory.
 
-Avoiding the use of third-party RGB and fan control software will help minimize the risk. OpenRGB is one notable offender which has been proven to corrupt DDR5 SPD EEPROM contents many times, even if RAM didn’t have RGB leds. I.e. you might have used it to configure the lighting color of your RGB fans, without touching anything related to memory, and still end up with corrupted RAM SPD. This software is a public hazard and must be avoided.
+Avoiding the use of third-party RGB and fan control software will help minimize the risk. OpenRGB is one notable offender which has been [proven](https://www.overclock.net/threads/teamgroup-ddr-7600-openrgb-killed-the-modules-trying-to-use-thaiphoon-burner-to-recover-them.1805037/) to [corrupt](https://www.overclock.net/threads/gskill-ddr5-spd-suddenly-stopped-working.1804882/) DDR5 SPD EEPROM contents [many](https://www.reddit.com/r/OpenRGB/comments/128ilh6/nonrgb_gskill_ddr5_spd_read_failure_after_using/) [times](https://www.reddit.com/r/OpenRGB/comments/zloyp2/openrgb_killed_the_leds_of_my_new_ram/), even if RAM didn’t have RGB leds. I.e. you might have used it to configure the lighting color of your RGB fans, without touching anything related to memory, and still end up with corrupted RAM SPD. This software is a public hazard and must be avoided.
 
 However, even official mainboard vendor software should be limited in usage and, at best, avoided completely, too.
 
@@ -138,7 +138,7 @@ One radical measure that can be done to prevent important parts of SPD EEPROM fr
 
 ![RSWP status](.repo/8cdcbfe0e9f82627.webp)
 
-*New revisions of TEAMGROUP T-Create Expert RAM come with RSWP set for the most important blocks. It's a big improvement, but the XMP and EXPO blocks are left unprotected. If they get corrupted and the system is configured to use XMP (which it very likely would be), the system would become unbootable. In this case partial recovery is possible by resetting BIOS which would disable XMP and fallback to a (protected) JEDEC profile.*
+*New revisions of TEAMGROUP T-Create Expert RAM come with RSWP set for the most important blocks. It’s a big improvement, but the XMP and EXPO blocks are left unprotected. If they get corrupted and the system is configured to use XMP, which it very likely would be, it would become unbootable. In such case partial recovery could be possible by resetting BIOS which would disable XMP and fallback to a (protected) JEDEC profile.*
 
 RSWP sees SPD EEPROM contents as divided into 16 blocks of 64 bytes each. For a normal non-RGB RAM module setting RSWP for blocks 0..13 is recommended. The last two blocks, 14 and 15, belong to user-programmable XMP section and must be left writable.
 

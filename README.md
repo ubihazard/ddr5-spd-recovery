@@ -130,7 +130,7 @@ Finally, running multiple diagnostic or control applications side-by-side is yet
 
 A universal piece of advice that can be given is if you happen to use any software that performs low-level access to system components and it appears to behave erratically, – stop using it immediately and discard it.
 
-### A note on RSWP
+### A Note on RSWP
 
 One radical measure that can be done to prevent important parts of SPD EEPROM from corruption (JEDEC, XMP, EXPO sections) is setting RSWP bit for certain EEPROM blocks. A protection of this kind will prevent overwriting of protected blocks even if `SPD Write Disable` BIOS option is set to `False`. However, the important downside of this method is that once set, such protection cannot be removed without a dedicated hardware DDR5 RAM programmer device.
 

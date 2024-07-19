@@ -110,7 +110,7 @@ Main CRC: 0x8021 (0x8021)
 
 Once you are done working with RAM SPD, reboot the system and change the `SPD Write Disable` BIOS option back to `True` (or whatever is an equivalent in your case, with the same meaning), save changes and reboot again.
 
-![TEAMGROUP T-Create Expert reanimation](.repo/ccdc72278f806fc9.webp)
+![TEAMGROUP T-Create Expert reanimation](.github/ccdc72278f806fc9.webp)
 
 *On the photo above: TEAMGROUP T-Create Expert module on a reanimation table after having too much RGB. This particular module was successfully recovered by flashing its SPD EEPROM with a known working dump.*
 
@@ -136,13 +136,13 @@ One radical measure that can be done to prevent important parts of SPD EEPROM fr
 
 (Normally, DDR5 RAM is supposed to come with RSWP protection bit already set on all important blocks from factory, and most kits do. Unfortunately, this hadn’t always been the case. Early revisions of TEAMGROUP and G.SKILL DDR5 RAM are notorious for having no protection whatsoever.)
 
-![RSWP status](.repo/8cdcbfe0e9f82627.webp)
+![RSWP status](.github/8cdcbfe0e9f82627.webp)
 
 *New revisions of TEAMGROUP T-Create Expert RAM come with RSWP set for the most important blocks. It’s a big improvement, but the XMP and EXPO blocks are left unprotected. If they get corrupted and the system is configured to use XMP, which it very likely would be, it would become unbootable. In such case partial recovery could be possible by resetting BIOS which would disable XMP and fallback to a (protected) JEDEC profile.*
 
 RSWP sees SPD EEPROM contents as divided into 16 blocks of 64 bytes each. For a normal non-RGB RAM module setting RSWP for blocks 0..13 is recommended. The last two blocks, 14 and 15, belong to user-programmable XMP section and must be left writable.
 
-![RSWP set](.repo/cbd5fbcf53cb76ef.webp)
+![RSWP set](.github/cbd5fbcf53cb76ef.webp)
 
 *The same T-Create Expert module with RSWP set for remaining blocks, including XMP and EXPO. Such module would no longer fail due to SPD corruption.*
 

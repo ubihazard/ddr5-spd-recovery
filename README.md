@@ -21,7 +21,7 @@ With the provided tools you can:
   * Check RSWP status and add RSWP (reversible[^1] software protection) to your RAM modules to prevent their accidental corruption by junk software again.
       * Only for very experienced and knowledgeable users who understand what they are doing and realize the potential danger involved.
 
-[^1]: The “reversible” in this abbreviation is a misnomer. Once added by software means (e.g. via SMBus on your mainboard), it is not really reversible without a dedicated hardware DDR RAM programming device. So it is “reversible” in a sense that it *can* still be reversed, – just no longer by software means, which were used to add it in the first place.
+[^1]: The “reversible” in this abbreviation is a misnomer. Once added by software means (e.g. via SMBus on your mainboard), it is not really reversible without a dedicated hardware DDR5 RAM programming device. So it is “reversible” in a sense that it *can* still be reversed, – just no longer by software means, which were used to add it in the first place.
 
 ## Installation
 
@@ -148,7 +148,7 @@ RSWP sees SPD EEPROM contents as divided into 16 blocks of 64 bytes each. For a 
 
 RGB modules, on the other hand, are a challenge. In order to properly add RSWP protection you need to know what exact addresses are used to store RGB lighting settings. From there you can infer what blocks (in addition to 14 and 15) must be left writable in order to keep your RAM RGB lighting functional and configurable. (It is possible for certain RGB RAM to not store its LED settings inside SPD, in which case it relies completely on software to set lighting effects upon booting into operating system. If you know for sure this is the case with your RAM, you can set RSWP for the first fourteen blocks like with non-RGB variant.)
 
-As you might have already unserstood, accidentally setting RSWP on a data block that is corrupted (before flashing it with data from a valid ROM) or on a wrong RAM module will leave your RAM in a permanently broken state. (Unless you got access to a specialized hardware.)
+As you might have already unserstood, accidentally setting RSWP on a data block that is corrupted (before flashing it with valid data from a good ROM) or on a wrong RAM module will leave your RAM in a permanently broken state. (Unless you got access to a specialized hardware.)
 
 *For this reason I give no direct instructions, advice, or suggestions on how to use `spdsetrswp.py` script. It is entirely up to you to take this risk and face any potential devastating consequences.*
 

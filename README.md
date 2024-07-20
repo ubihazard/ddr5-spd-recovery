@@ -132,7 +132,7 @@ A universal piece of advice that can be given is if you happen to use any softwa
 
 ### A Note on RSWP
 
-One radical measure that can be done to prevent important parts of SPD EEPROM from corruption (JEDEC, XMP, EXPO sections) is setting RSWP bit for certain EEPROM blocks. A protection of this kind will prevent overwriting of protected blocks even if `SPD Write Disable` BIOS option is set to `False`. However, the important downside of this method is that once set, such protection cannot be removed without a dedicated hardware DDR5 RAM programmer device.
+One radical measure that can be done to prevent important parts of SPD EEPROM from corruption (JEDEC, XMP, EXPO sections) is setting RSWP[^1] bit for certain EEPROM blocks. A protection of this kind will prevent overwriting of protected blocks even if `SPD Write Disable` BIOS option is set to `False`. However, the important downside of this method is that once set, such protection cannot be removed without a dedicated hardware DDR5 RAM programmer device.
 
 (Normally, DDR5 RAM is supposed to come with RSWP protection bit already set on all important blocks from factory, and most kits do. Unfortunately, this hadn’t always been the case. Early revisions of TEAMGROUP and G.SKILL DDR5 RAM are notorious for having no protection whatsoever.)
 

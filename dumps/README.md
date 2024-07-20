@@ -3,7 +3,7 @@ DDR5 SPD Database
 
 The dumps are grouped by manufacturer and RAM kit.
 
-Each kit folder follows the naming scheme:
+Each kit folder follows the naming scheme (fields are separated by `_`):
 
   * Full name, as advertised on its packaging material.
       * Lower case letters with spaces replaced with `-`.
@@ -16,6 +16,4 @@ Each kit folder follows the naming scheme:
   * Part number in square brackets: `[ctced532g6000hc38adc01]`.
       * Do not confuse individual RAM module part number as recorded in its SPD and the part number of the whole RAM kit, – they are different things (see below).
 
-(Fields are separated by `_`.)
-
-Inside a kit folder there are SPD dump(s), each named according to its part number and serial number: `ud5-6000_0104eef6.spd`.
+Inside a kit folder there are SPD dump(s), each named according to its part number and serial number, as found recorded inside their SPD: `ud5-6000_0104eef6.spd`.

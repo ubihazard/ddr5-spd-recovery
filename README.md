@@ -124,7 +124,7 @@ Avoiding the use of third-party RGB and fan control software will help minimize 
 
 However, even official mainboard vendor software should be limited in usage and, at best, avoided completely, too.
 
-Running old diagnostic and system information software that hadn’t been properly updated to work with DDR5 RAM might result in corruption as well. Such programs typically gain access to RAM SPD in order to report detailed memory information. A program that would attempt to read DDR5 SPD as if it was from DDR4 can wreak havoc on it.
+Running old diagnostic and system information software that hadn’t been properly updated to work with DDR5 RAM might result in corruption as well. Such programs typically gain access to RAM SPD in order to report detailed memory information. A program that would attempt to work with DDR5 SPD as if it was from DDR4 can wreak havoc on it.
 
 Finally, running multiple diagnostic or control applications side-by-side is yet another factor that can contribute to SPD corruption. All such applications have to rely on a low-level kernel driver for shared SMBus access. if such driver is not fully compatible with operating system or fails to properly serialize concurrent access to SMBus devices via a lock mechanism, bad things are guaranteed to happen. Therefore you must use only recent up-to-date versions of known and established software of this kind, apps which have proven to work without issues at least in the recent past.
 
@@ -146,7 +146,7 @@ RSWP sees SPD EEPROM contents as divided into 16 blocks of 64 bytes each. For a 
 
 *The same T-Create Expert module with RSWP set for remaining blocks, including XMP and EXPO. Such module would no longer fail due to SPD corruption.*
 
-RGB modules, on the other hand, are a challenge. In order to properly add RSWP protection you need to know what exact addresses are used to store RGB lighting settings. From there you can infer what blocks (in addition to 14 and 15) must be left writable in order to keep your RAM RGB lighting functional and configurable. (It is possible for certain RGB RAM to not store its LED settings inside SPD, in which case it relies completely on software to set lighting effects upon booting into operating system. If you know for sure this is the case with your RAM, you can set RSWP for the first fourteen blocks as with non-RGB variant.)
+RGB modules, on the other hand, are a challenge. In order to properly add RSWP protection you need to know what exact addresses are used to store RGB lighting settings. From there you can infer what blocks (in addition to 14 and 15) must be left writable in order to keep your RAM RGB lighting functional and configurable. (It is possible for certain RGB RAM to not store its LED settings inside SPD, in which case it relies completely on software to set lighting effects upon booting into operating system. If you know for sure this is the case with your RAM, you can set RSWP for the first fourteen blocks like with non-RGB variant.)
 
 As you might have already unserstood, accidentally setting RSWP on a data block that is corrupted (before flashing it with data from a valid ROM) or on a wrong RAM module will leave your RAM in a permanently broken state. (Unless you got access to a specialized hardware.)
 

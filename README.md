@@ -75,9 +75,7 @@ In the output of this command, find a single bus that belongs to your mainboard 
 i2c-11    smbus    SMBus I801 adapter at efa0    SMBus adapter
 ```
 
-Take note of its number: __11__.
-
-This is the bus on which you can access SPD chip device(s) of your RAM. They should be available at the address range from `0x50` to `0x57`, with the RAM stick installed in a priority slot available at `0x51` (second slot of DIMM A channel and second from left). Therefore the second RAM module, if installed properly, will be at `0x53` (second slot of DIMM B channel, fourth slot from left). On a typical consumer board with all four RAM slots populated the other modules would be at `0x50` (leftmost) and `0x52` (third) respectively.
+Take note of its number: __11__. This is the bus on which you can access SPD chip device(s) of your RAM. They should be available at the address range from `0x50` to `0x57`, with the RAM stick installed in a priority slot available at `0x51` (second slot of DIMM A channel and second from left). Therefore the second RAM module, if installed properly, will be at `0x53` (second slot of DIMM B channel, fourth slot from left). On a typical consumer board with all four RAM slots populated the other modules would be at `0x50` (leftmost) and `0x52` (third) respectively.
 
 You can now dump the contents of SPD EEPROM from one of your DDR5 RAM modules:
 

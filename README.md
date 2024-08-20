@@ -18,10 +18,10 @@ With the provided tools you can:
       * Where do you get a working dump? That’s a good question, especially if all your modules are already tainted and you no longer have a single good stick to get a perfect dump from. Try asking on popular computer hardware boards and on Reddit. Chances are there will be people willing to help, provided your RAM kit isn’t too rare or you can identify a compatible one.
       * Consider RMA if your RAM is still under warranty. Actually, consider RMA first, before trying to use this software to repair the kit yourself, because chances are you are just going to break it even more.
       * Share this page to bring more public awareness to this issue of DDR5 RAM failing because of subtle SPD corruption by software.
-  * Check RSWP status and add RSWP (reversible[^1] software protection) to your RAM modules to prevent their accidental corruption by junk software again.
+  * Check RSWP status and add RSWP[^1] to your RAM modules to prevent their accidental corruption by junk software again.
       * Only for very experienced and knowledgeable users who understand what they are doing and realize the potential danger involved.
 
-[^1]: The “reversible” in this abbreviation is a misnomer. Once added by software means (e.g. via SMBus on your mainboard), it is not really reversible without a dedicated hardware DDR5 RAM programming device. So it is “reversible” in a sense that it *can* still be reversed, – just no longer by software means, which were used to add it in the first place.
+[^1]: Reversible software write protection. The “reversible” in this abbreviation is a misnomer. Once added by software means (e.g. via SMBus on your mainboard), it is not really reversible without a dedicated hardware DDR5 RAM programming device. So it is “reversible” in a sense that it *can* still be reversed, – just no longer by software means, which were used to add it in the first place.
 
 ## Installation
 

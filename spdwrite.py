@@ -5,18 +5,19 @@ import sys
 import getopt
 
 def usage():
-    printerr(sys.argv[0], '--bus <busnum> --dimm <dimmaddr> --file <dump> --help')
+    printerr(sys.argv[0], '--bus <busnum> --dimm <dimmaddr> --file <dump> --range <0..1023>[,0-1023[,...]] --help')
     sys.exit(1)
 
 def main(argv):
     try:
-        opts, args = getopt.getopt(argv, 'b:d:f:h', ['bus=', 'dimm=', 'file=', 'help'])
+        opts, args = getopt.getopt(argv, 'b:d:f:h', ['bus=', 'dimm=', 'file=', 'range=', 'help'])
     except getopt.GetoptError:
         usage()
 
     bus = -1
     dimm = -1
     dump = ''
+    rnge = ''
     for opt, arg in opts:
         try:
             if opt in ('-h', '--help'):
@@ -24,6 +25,7 @@ def main(argv):
                 print('  -b --bus: bus number (0)')
                 print('  -d --dimm: dimm address on the bus (0x51)')
                 print('  -f --file: clean SPD dump in raw binary format.')
+                print('  --range: specific region(s) to write.')
                 sys.exit(0)
             elif opt in ('-b', '--bus'):
                 bus = optint(arg)
@@ -31,6 +33,8 @@ def main(argv):
                 dimm = opthex(arg)
             elif opt in ('-f', '--file'):
                 dump = arg
+            elif opt in ('--range'):
+                rnge = arg
         except:
             usage()
     if bus < 0 or bus > 99 \

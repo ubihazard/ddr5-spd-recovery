@@ -32,7 +32,7 @@ def usage():
 
 def main(argv):
     try:
-        opts, args = getopt.getopt(argv, 'f:h', ['file=', 'help', 'fixcrc'])
+        opts, args = getopt.getopt(argv, 'f:h', ['file=', 'fixcrc', 'help'])
     except getopt.GetoptError:
         usage()
 

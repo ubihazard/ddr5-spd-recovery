@@ -10,7 +10,7 @@ def usage():
 
 def main(argv):
     try:
-        opts, args = getopt.getopt(argv, 'b:d:f:l:h', ['bus=', 'dimm=', 'first=', 'last=', 'help'])
+        opts, args = getopt.getopt(argv, 'b:d:h', ['bus=', 'dimm=', 'first=', 'last=', 'help'])
     except getopt.GetoptError:
         usage()
 
@@ -24,16 +24,16 @@ def main(argv):
                 print(sys.argv[0], '--bus <busnum> --dimm <dimmaddr> --first <0..15> --last <0..15>')
                 print('  -b --bus: bus number (0)')
                 print('  -d --dimm: dimm address on the bus (0x51)')
-                print('  -f --first: first block to protect (0)')
-                print('  -l --last: last block to protect (9)')
+                print('  --first: first block to protect (0)')
+                print('  --last: last block to protect (9)')
                 sys.exit(0)
             elif opt in ('-b', '--bus'):
                 bus = optint(arg)
             elif opt in ('-d', '--dimm'):
                 dimm = opthex(arg)
-            elif opt in ('-f', '--first'):
+            elif opt in ('--first'):
                 first = optint(arg)
-            elif opt in ('-l', '--last'):
+            elif opt in ('--last'):
                 last = optint(arg)
         except:
             usage()

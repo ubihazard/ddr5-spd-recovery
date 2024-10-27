@@ -3,6 +3,7 @@
 import os
 import sys
 import getopt
+from functools import cmp_to_key
 
 def usage():
     printerr(sys.argv[0], '--bus <busnum> --dimm <dimmaddr> --file <dump> --range <0..1023>[,0-1023[,...]] --help')
@@ -17,7 +18,7 @@ def main(argv):
     bus = -1
     dimm = -1
     dump = ''
-    rnge = ''
+    rstr = ''
     for opt, arg in opts:
         try:
             if opt in ('-h', '--help'):
@@ -26,6 +27,7 @@ def main(argv):
                 print('  -d --dimm: dimm address on the bus (0x51)')
                 print('  -f --file: clean SPD dump in raw binary format.')
                 print('  --range: specific region(s) to write.')
+                print('    (Ranges must not overlap.)')
                 sys.exit(0)
             elif opt in ('-b', '--bus'):
                 bus = optint(arg)
@@ -34,19 +36,62 @@ def main(argv):
             elif opt in ('-f', '--file'):
                 dump = arg
             elif opt in ('--range'):
-                rnge = arg
+                rstr = arg
         except:
             usage()
     if bus < 0 or bus > 99 \
     or dimm < 0x50 or dimm > 0x57 \
     or dump == '':
         usage()
+    ranges = getranges(rstr)
+    if len(ranges) == 0:
+        usage()
 
     checkroot()
     checkddr5()
-    writespd(bus, dimm, dump)
+    writespd(bus, dimm, dump, ranges)
 
-def writespd(busnum, dimmaddr, filepath):
+def rangesortfunc(a, b):
+    return a[0] - b[0]
+
+def getranges(rstr):
+    if rstr == '':
+        return [[0, SPD_DDR5_EEPROM_SIZE - 1]]
+    rngv = []
+    rngs = rstr.split(',')
+    if len(rngs) > SPD_DDR5_EEPROM_SIZE:
+        return []
+    for item in rngs:
+        rng = item.split('-')
+        if len(rng) > 2:
+            return []
+        first = optintx(rng[0])
+        last = first
+        if len(rng) > 1:
+            last = optintx(rng[1])
+        if first < 0 or last < 0 \
+        or last < first:
+            return []
+        rngv.append([first, last])
+    rngv = sorted(rngv, key=cmp_to_key(rangesortfunc))
+    # Find duplicates or overlapping regions
+    for idx in range(0, len(rngv)):
+        if i == len(rngv) - 1:
+            break
+        if rngv[i][0] <= rngv[i + 1][0] <= rngv[i][1]:
+            return []
+    return rngv
+
+def rswpblocksget(busnum, dimmaddr):
+    rswpblocks = []
+    for reg in range(0, 2):
+        out = i2cget(busnum, dimmaddr, SPD_MREG_RSWP_FIRST + reg)
+        out = out[2:].decode()
+        byte = bytes.fromhex(out)[0]
+        for i in range(0, 8):
+            rswpblocks.append(bool((byte >> i) & 1))
+
+def writespd(busnum, dimmaddr, filepath, ranges):
     spddata = readspdfile(filepath)
 
     print('WARNING! Improper use of this tool can result in data corruption over SMBus and hardware failure.\n')
@@ -56,18 +101,25 @@ def writespd(busnum, dimmaddr, filepath):
     go = input('Continue? (yes/no): ').lower()
     print('')
     if go in ['yes']:
-        page = 0
-        start = 0
-        end = SPD_DDR5_EEPROM_SIZE
-        for idx in range(start, end):
-            off = idx % SPD_DDR5_EEPROM_PAGE_SIZE
-            addr = SPD_MREG_DATA | off
-            if off == 0:
-                selectpage(busnum, dimmaddr, page)
-                page += 1
-            byte = spddata[idx]
-            print('Writing to SPD EEPROM: {}/{} ({} -> {}.{})'.format(idx + 1, end, hex(byte), page - 1, hex(addr)))
-            i2cset(busnum, dimmaddr, addr, byte)
+        page = -1
+        rswpblocks = rswpblocksget(busnum, dimmaddr)
+        for rng in ranges:
+            start = rng[0]
+            end = rng[1]
+            for idx in range(start, end + 1):
+                block = idx / SPD_DDR5_EEPROM_BLOCK_SIZE
+                if rswpblocks[block]:
+                    print('Write-protected: {}/{}, {} -> {}.{} [{}]'.format(idx + 1, end + 1, hex(byte), page - 1, hex(addr), hex(idx)))
+                    continue
+                p = idx / SPD_DDR5_EEPROM_PAGE_SIZE
+                off = idx % SPD_DDR5_EEPROM_PAGE_SIZE
+                if p != page:
+                    page = p
+                    selectpage(busnum, dimmaddr, page)
+                addr = SPD_MREG_DATA | off
+                byte = spddata[idx]
+                print('Writing to SPD EEPROM: {}/{}, {} -> {}.{} [{}]'.format(idx + 1, end + 1, hex(byte), page - 1, hex(addr), hex(idx)))
+                i2cset(busnum, dimmaddr, addr, byte)
         selectpage(busnum, dimmaddr, 0)
         print('')
         print('Successfully flashed "{}" to DIMM {}.'.format(filepath, hex(dimmaddr)))

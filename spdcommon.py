@@ -100,7 +100,6 @@ def selectpage(busnum, dimmaddr, pagenum):
     EEPROM_VIRT_PAGE_SWITCHED_FROM_ZERO = pagenum != 0
 
 def i2cget(busnum, dimmaddr, addr):
-    sleep(SPD_IO_DELAY) # in case if a read happens immediately after a write (on the same address)
     try:
         i2cproc = subprocess.Popen(['i2cget', '-y', str(busnum), hex(dimmaddr)
         , hex(addr)], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
@@ -114,7 +113,6 @@ def i2cget(busnum, dimmaddr, addr):
     return out
 
 def i2cset(busnum, dimmaddr, addr, byte):
-    sleep(SPD_IO_DELAY) # writing through SMBus requires some delay
     try:
         i2cproc = subprocess.Popen(['i2cset', '-y', str(busnum), hex(dimmaddr)
         , hex(addr), hex(byte)], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
@@ -123,6 +121,7 @@ def i2cset(busnum, dimmaddr, addr, byte):
         i2cfail('i2cset', 0)
     if i2cproc.returncode != 0:
         i2cfail('i2cset', i2cproc.returncode)
+    sleep(SPD_IO_DELAY) # writing through SMBus requires some delay
     return out
 
 def i2cfail(tool, code):

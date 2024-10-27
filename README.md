@@ -130,9 +130,9 @@ A universal piece of advice that can be given is if you happen to use any softwa
 
 ### A Note on RSWP
 
-One radical measure that can be done to prevent important parts of SPD EEPROM from corruption (JEDEC, XMP, EXPO sections) is setting RSWP[^1] bit for certain EEPROM blocks. A protection of this kind will prevent overwriting of protected blocks even if `SPD Write Disable` BIOS option is set to `False`. However, the important downside of this method is that once set, such protection cannot be removed without a dedicated hardware DDR5 RAM programmer device.
+One radical measure that can help prevent important parts of SPD EEPROM from being corrupted (JEDEC, XMP or EXPO sections) is setting RSWP[^1] bit for certain EEPROM blocks. A protection of this kind will prevent overwriting of blocks even if `SPD Write Disable` BIOS option is set to `False`. However, the important downside of this method is that once set, such protection cannot be removed without a dedicated hardware DDR5 RAM programmer device.
 
-(Normally, DDR5 RAM is supposed to come with RSWP protection bit already set on all important blocks from factory, and most kits do. Unfortunately, this hadn’t always been the case. Early revisions of TEAMGROUP and G.SKILL DDR5 RAM are notorious for having no protection whatsoever.)
+Normally, DDR5 RAM is supposed to come with RSWP protection bit already set on all important blocks from factory, and most kits do. Unfortunately, this hadn’t always been the case. Early revisions of TEAMGROUP and G.SKILL DDR5 RAM are notorious for having no protection whatsoever.
 
 ![RSWP status](.github/8cdcbfe0e9f82627.webp)
 
@@ -144,9 +144,9 @@ RSWP sees SPD EEPROM contents as divided into 16 blocks of 64 bytes each. For a 
 
 *The same T-Create Expert module with RSWP set for remaining blocks, including XMP and EXPO. Such module would no longer fail due to SPD corruption.*
 
-RGB modules, on the other hand, are a challenge. In order to properly add RSWP protection you need to know what exact addresses are used to store RGB lighting settings. From there you can infer what blocks (in addition to 14 and 15) must be left writable in order to keep your RAM RGB lighting functional and configurable. (It is possible for certain RGB RAM to not store its LED settings inside SPD, in which case it relies completely on software to set lighting effects upon booting into operating system. If you know for sure this is the case with your RAM, you can set RSWP for the first fourteen blocks like with non-RGB variant.)
+RGB modules, on the other hand, are a challenge. In order to properly add RSWP protection you need to know what exact addresses are used to store RGB lighting settings. From there you can infer what blocks (in addition to 14 and 15) must be left writable in order to keep your RAM RGB lighting functional and configurable. It is possible for certain RGB RAM to not store its LED settings inside SPD, in which case it relies completely on software to set lighting effects upon booting into operating system. If you know for sure this is the case with your RAM, you can set RSWP for the first 0..13 (fourteen) blocks, – like with non-RGB variant.
 
-As you might have already unserstood, accidentally setting RSWP on a data block that is corrupted (before flashing it with valid data from a good ROM) or on a wrong RAM module will leave your RAM in a permanently broken state. (Unless you got access to a specialized hardware.)
+As you might have already understood, accidentally setting RSWP on a data block that is corrupted (before flashing it with valid data from a good ROM) or on a wrong RAM module will leave your RAM in a permanently broken state. (Unless you got access to a specialized hardware.)
 
 *For this reason I give no direct instructions, advice, or suggestions on how to use `spdsetrswp.py` script. It is entirely up to you to take this risk and face any potential devastating consequences.*
 

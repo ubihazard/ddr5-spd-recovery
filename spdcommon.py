@@ -6,6 +6,7 @@ from time import sleep
 
 SPD_DDR5_EEPROM_SIZE = 1024
 SPD_DDR5_EEPROM_PAGE_SIZE = 128
+SPD_DDR5_EEPROM_BLOCK_SIZE = 64
 
 SPD_MREG_VIRTUAL_PAGE = 0xb
 SPD_MREG_RSWP_FIRST = 0xc
@@ -15,6 +16,11 @@ SPD_IO_DELAY = 0.1 # 100 milliseconds
 
 def optint(arg):
     return int(arg)
+
+def optintx(arg):
+    if arg[:2].lower() == '0x':
+        raise int(arg, 16)
+    return int(arg, 10)
 
 def opthex(arg):
     if arg[:2].lower() != '0x':

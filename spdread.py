@@ -72,7 +72,7 @@ def readspd(busnum, dimmaddr):
             out = i2cget(busnum, dimmaddr, addr)
             out = out[2:].decode()       # strip "0x" and convert to string
             byte = bytes.fromhex(out)[0] # convert hex string to bytes
-            print('Reading from SPD EEPROM: {}/{} ({}.{}: {})'.format(idx + 1, end, page - 1, hex(addr), hex(byte)))
+            print('Reading from SPD EEPROM: {}/{}, {}.{} [{}]: {}'.format(idx + 1, end, page - 1, hex(addr), hex(idx), hex(byte)))
             try:
                 spdfile.write(bytes([byte]))
             except:

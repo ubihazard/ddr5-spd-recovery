@@ -78,7 +78,7 @@ def setrswp(busnum, dimmaddr, blockfrom, blockto):
         print('')
         print('RSWP is now set for blocks #{}..{} on DIMM {}.'.format(blockfrom, blockto, hex(dimmaddr)))
         print('')
-        print('This protection can only be removed using a dedicated hardware DDR5 RAM programmer device.')
+        print('This protection can now only be removed using a dedicated hardware DDR5 RAM programmer device.')
         print('You have been warned.')
     else:
         print('Exiting without performing any operations on SMBus.')

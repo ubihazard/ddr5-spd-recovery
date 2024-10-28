@@ -114,12 +114,12 @@ def writespd(busnum, dimmaddr, filepath, ranges):
                 addr = SPD_MREG_DATA | off
                 byte = spddata[idx]
                 if rswpblocks[block]:
-                    print('Write-protected: {}/{}, {} -> {}.{} [{}]'.format(idx + 1, end, hex(byte), page - 1, hex(addr), hex(idx)))
+                    print('Write-protected: {}/{}, {} -> {}.{} [{}]'.format(idx + 1, end, hex(byte), pagenew, hex(addr), hex(idx)))
                     continue
                 if pagenew != page:
                     page = pagenew
                     selectpage(busnum, dimmaddr, page)
-                print('Writing to SPD EEPROM: {}/{}, {} -> {}.{} [{}]'.format(idx + 1, end, hex(byte), page - 1, hex(addr), hex(idx)))
+                print('Writing to SPD EEPROM: {}/{}, {} -> {}.{} [{}]'.format(idx + 1, end, hex(byte), page, hex(addr), hex(idx)))
                 i2cset(busnum, dimmaddr, addr, byte)
         selectpage(busnum, dimmaddr, 0)
         print('')

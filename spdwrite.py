@@ -6,7 +6,7 @@ import getopt
 from functools import cmp_to_key
 
 def usage():
-    printerr(sys.argv[0], '--bus <busnum> --dimm <dimmaddr> --file <dump> --range <0..1023>[,0-1023[,...]] --help')
+    printerr(sys.argv[0], '--bus <busnum> --dimm <dimmaddr> --file <dump> --range <0-1023>[,0..1023[,...]] --help')
     sys.exit(1)
 
 def main(argv):
@@ -22,7 +22,7 @@ def main(argv):
     for opt, arg in opts:
         try:
             if opt in ('-h', '--help'):
-                print(sys.argv[0], '--bus <busnum> --dimm <dimmaddr> --file <dump> --range <0..1023>[,0-1023[,...]]')
+                print(sys.argv[0], '--bus <busnum> --dimm <dimmaddr> --file <dump> --range <0-1023>[,0..1023[,...]]')
                 print('  -b --bus: bus number (0)')
                 print('  -d --dimm: dimm address on the bus (0x51)')
                 print('  -f --file: clean SPD dump in raw binary format.')

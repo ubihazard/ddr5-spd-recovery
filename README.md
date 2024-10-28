@@ -106,6 +106,14 @@ Main CRC: 0x8021 (0x8021)
   EXPO CRC: 0x9fe2 (0x9fe2)
 ```
 
+Flashing the ROM is straightforward:
+
+```sh
+sudo ./spdwrite.py --bus 11 --dimm 0x51 --file new.rom --range 0-1023
+```
+
+The range argument is optional and allows to overwrite only specific portions of the EEPROM. Multiple regions and single bytes can be specified (see `--help`). If omitted, the entire EEPROM will be overwritten (`0-1023`).
+
 Once you are done working with RAM SPD, reboot the system and change the `SPD Write Disable` BIOS option back to `True` (or whatever is an equivalent in your case, with the same meaning), save changes and reboot again.
 
 ![TEAMGROUP T-Create Expert reanimation](.github/ccdc72278f806fc9.webp)

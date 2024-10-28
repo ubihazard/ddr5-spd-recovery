@@ -73,11 +73,11 @@ def getranges(rstr):
         or last < first or last > 1023:
             return []
         rngv.append([first, last])
-    rngv = sorted(rngv, key=cmp_to_key(rangesortfunc))
     # Find duplicates or overlapping regions
-    for idx in range(0, len(rngv)):
-        if idx == len(rngv) - 1:
-            break
+    if len(rngv) == 0:
+        return []
+    rngv = sorted(rngv, key=cmp_to_key(rangesortfunc))
+    for idx in range(0, len(rngv) - 1):
         if rngv[idx][0] <= rngv[idx + 1][0] <= rngv[idx][1]:
             return []
     return rngv

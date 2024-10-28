@@ -108,16 +108,16 @@ def writespd(busnum, dimmaddr, filepath, ranges):
             end = rng[1]
             for idx in range(start, end + 1):
                 block = idx / SPD_DDR5_EEPROM_BLOCK_SIZE
+                p = idx / SPD_DDR5_EEPROM_PAGE_SIZE
+                off = idx % SPD_DDR5_EEPROM_PAGE_SIZE
+                addr = SPD_MREG_DATA | off
+                byte = spddata[idx]
                 if rswpblocks[block]:
                     print('Write-protected: {}/{}, {} -> {}.{} [{}]'.format(idx + 1, end + 1, hex(byte), page - 1, hex(addr), hex(idx)))
                     continue
-                p = idx / SPD_DDR5_EEPROM_PAGE_SIZE
-                off = idx % SPD_DDR5_EEPROM_PAGE_SIZE
                 if p != page:
                     page = p
                     selectpage(busnum, dimmaddr, page)
-                addr = SPD_MREG_DATA | off
-                byte = spddata[idx]
                 print('Writing to SPD EEPROM: {}/{}, {} -> {}.{} [{}]'.format(idx + 1, end + 1, hex(byte), page - 1, hex(addr), hex(idx)))
                 i2cset(busnum, dimmaddr, addr, byte)
         selectpage(busnum, dimmaddr, 0)

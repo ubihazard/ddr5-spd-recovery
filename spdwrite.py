@@ -76,9 +76,9 @@ def getranges(rstr):
     rngv = sorted(rngv, key=cmp_to_key(rangesortfunc))
     # Find duplicates or overlapping regions
     for idx in range(0, len(rngv)):
-        if i == len(rngv) - 1:
+        if idx == len(rngv) - 1:
             break
-        if rngv[i][0] <= rngv[i + 1][0] <= rngv[i][1]:
+        if rngv[idx][0] <= rngv[idx + 1][0] <= rngv[idx][1]:
             return []
     return rngv
 
@@ -88,8 +88,8 @@ def rswpblocksget(busnum, dimmaddr):
         out = i2cget(busnum, dimmaddr, SPD_MREG_RSWP_FIRST + reg)
         out = out[2:].decode()
         byte = bytes.fromhex(out)[0]
-        for i in range(0, 8):
-            rswpblocks.append(bool((byte >> i) & 1))
+        for bit in range(0, 8):
+            rswpblocks.append(bool((byte >> bit) & 1))
 
 def writespd(busnum, dimmaddr, filepath, ranges):
     spddata = readspdfile(filepath)
@@ -108,15 +108,15 @@ def writespd(busnum, dimmaddr, filepath, ranges):
             end = rng[1]
             for idx in range(start, end + 1):
                 block = idx / SPD_DDR5_EEPROM_BLOCK_SIZE
-                p = idx / SPD_DDR5_EEPROM_PAGE_SIZE
+                pagenew = idx / SPD_DDR5_EEPROM_PAGE_SIZE
                 off = idx % SPD_DDR5_EEPROM_PAGE_SIZE
                 addr = SPD_MREG_DATA | off
                 byte = spddata[idx]
                 if rswpblocks[block]:
                     print('Write-protected: {}/{}, {} -> {}.{} [{}]'.format(idx + 1, end + 1, hex(byte), page - 1, hex(addr), hex(idx)))
                     continue
-                if p != page:
-                    page = p
+                if pagenew != page:
+                    page = pagenew
                     selectpage(busnum, dimmaddr, page)
                 print('Writing to SPD EEPROM: {}/{}, {} -> {}.{} [{}]'.format(idx + 1, end + 1, hex(byte), page - 1, hex(addr), hex(idx)))
                 i2cset(busnum, dimmaddr, addr, byte)

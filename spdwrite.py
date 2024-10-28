@@ -63,11 +63,11 @@ def getranges(rstr):
         return []
     for item in rngs:
         rng = item.split('-')
-        if len(rng) > 2:
-            return []
         first = optintx(rng[0])
         last = first
         if len(rng) > 1:
+            if len(rng) > 2:
+                return []
             last = optintx(rng[1])
         if first < 0 or first > 1023 \
         or last < first or last > 1023:

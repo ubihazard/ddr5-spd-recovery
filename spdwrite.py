@@ -22,11 +22,11 @@ def main(argv):
     for opt, arg in opts:
         try:
             if opt in ('-h', '--help'):
-                print(sys.argv[0], '--bus <busnum> --dimm <dimmaddr> --file <dump>')
+                print(sys.argv[0], '--bus <busnum> --dimm <dimmaddr> --file <dump> --range <0..1023>[,0-1023[,...]]')
                 print('  -b --bus: bus number (0)')
                 print('  -d --dimm: dimm address on the bus (0x51)')
                 print('  -f --file: clean SPD dump in raw binary format.')
-                print('  --range: specific region(s) to write.')
+                print('  --range: specific region(s) to overwrite.')
                 print('    (Ranges must not overlap.)')
                 sys.exit(0)
             elif opt in ('-b', '--bus'):
@@ -69,8 +69,8 @@ def getranges(rstr):
         last = first
         if len(rng) > 1:
             last = optintx(rng[1])
-        if first < 0 or last < 0 \
-        or last < first:
+        if first < 0 or first > 1023 \
+        or last < first or last > 1023:
             return []
         rngv.append([first, last])
     rngv = sorted(rngv, key=cmp_to_key(rangesortfunc))

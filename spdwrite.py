@@ -90,6 +90,7 @@ def rswpblocksget(busnum, dimmaddr):
         byte = bytes.fromhex(out)[0]
         for bit in range(0, 8):
             rswpblocks.append(bool((byte >> bit) & 1))
+    return rswpblocks
 
 def writespd(busnum, dimmaddr, filepath, ranges):
     spddata = readspdfile(filepath)
@@ -107,8 +108,8 @@ def writespd(busnum, dimmaddr, filepath, ranges):
             start = rng[0]
             end = rng[1] + 1
             for idx in range(start, end):
-                block = idx / SPD_DDR5_EEPROM_BLOCK_SIZE
-                pagenew = idx / SPD_DDR5_EEPROM_PAGE_SIZE
+                block = int(idx / SPD_DDR5_EEPROM_BLOCK_SIZE)
+                pagenew = int(idx / SPD_DDR5_EEPROM_PAGE_SIZE)
                 off = idx % SPD_DDR5_EEPROM_PAGE_SIZE
                 addr = SPD_MREG_DATA | off
                 byte = spddata[idx]
@@ -130,6 +131,6 @@ def writespd(busnum, dimmaddr, filepath, ranges):
 if __name__ == '__main__':
     if __package__ == None:
         sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-    from spdcommon import optint, opthex, checkroot, checkddr5, readspdfile, selectpage, i2cset, printerr \
-    , SPD_MREG_DATA, SPD_DDR5_EEPROM_SIZE, SPD_DDR5_EEPROM_PAGE_SIZE, SPD_DDR5_EEPROM_BLOCK_SIZE
+    from spdcommon import optint, opthex, optintx, checkroot, checkddr5, readspdfile, selectpage, i2cget, i2cset, printerr \
+    , SPD_MREG_RSWP_FIRST, SPD_MREG_DATA, SPD_DDR5_EEPROM_SIZE, SPD_DDR5_EEPROM_PAGE_SIZE, SPD_DDR5_EEPROM_BLOCK_SIZE
     main(sys.argv[1:])

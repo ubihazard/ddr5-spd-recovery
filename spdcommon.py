@@ -17,15 +17,15 @@ SPD_IO_DELAY = 0.1 # 100 milliseconds
 def optint(arg):
     return int(arg)
 
-def optintx(arg):
-    if arg[:2].lower() == '0x':
-        raise int(arg, 16)
-    return int(arg, 10)
-
 def opthex(arg):
     if arg[:2].lower() != '0x':
         raise ValueError('Hexadecimal argument must be preceded with "0x"')
     return int(arg, 16)
+
+def optintx(arg):
+    if arg[:2].lower() == '0x':
+        return int(arg, 16)
+    return int(arg, 10)
 
 def checkroot():
     if os.getuid():

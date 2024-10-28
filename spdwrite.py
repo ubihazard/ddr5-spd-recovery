@@ -131,5 +131,5 @@ if __name__ == '__main__':
     if __package__ == None:
         sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
     from spdcommon import optint, opthex, checkroot, checkddr5, readspdfile, selectpage, i2cset, printerr \
-    , SPD_MREG_DATA, SPD_DDR5_EEPROM_SIZE, SPD_DDR5_EEPROM_PAGE_SIZE
+    , SPD_MREG_DATA, SPD_DDR5_EEPROM_SIZE, SPD_DDR5_EEPROM_PAGE_SIZE, SPD_DDR5_EEPROM_BLOCK_SIZE
     main(sys.argv[1:])

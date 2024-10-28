@@ -95,7 +95,7 @@ def writespd(busnum, dimmaddr, filepath, ranges):
     spddata = readspdfile(filepath)
 
     print('WARNING! Improper use of this tool can result in data corruption over SMBus and hardware failure.\n')
-    print('Will now write to device file /dev/i2c-{}, chip address {}, byte-by-byte.\n'
+    print('Will now read/write from/to device file /dev/i2c-{}, chip address {}, byte-by-byte.\n'
     .format(busnum, hex(dimmaddr)))
 
     go = input('Continue? (yes/no): ').lower()
